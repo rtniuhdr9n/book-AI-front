@@ -1,13 +1,15 @@
 <template>
-  <div class="login-container">
-    <div class="login-form">
+  <div class="auth-container">
+    <div class="auth-form">
       <h1 class="title">BookAI</h1>
+      <h2 class="subtitle">登录</h2>
+      
       <form @submit.prevent="handleLogin">
         <div class="input-group">
           <label for="username">邮箱/用户名</label>
           <input 
             id="username" 
-            v-model="username" 
+            v-model="loginForm.username" 
             type="text" 
             placeholder="请输入邮箱或用户名"
             required
@@ -18,34 +20,57 @@
           <label for="password">密码</label>
           <input 
             id="password" 
-            v-model="password" 
+            v-model="loginForm.password" 
             type="password" 
             placeholder="请输入密码"
             required
           />
         </div>
         
-        <button type="submit" class="login-button">登录</button>
+        <button type="submit" class="submit-button">登录</button>
       </form>
+      
+      <p class="redirect-text">
+        还没有账户？
+        <router-link to="/register" class="link">立即注册</router-link>
+      </p>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 
-const username = ref('');
-const password = ref('');
+interface LoginForm {
+  username: string;
+  password: string;
+}
 
-const handleLogin = () => {
-  // 这里可以添加登录逻辑
-  console.log('登录信息:', { username: username.value, password: password.value });
-  alert(`欢迎回来 ${username.value}！登录功能已提交`);
+const router = useRouter();
+const loginForm = ref<LoginForm>({
+  username: '',
+  password: ''
+});
+
+const handleLogin = async () => {
+  // 模拟登录请求
+  console.log('登录信息:', loginForm.value);
+  
+  // 模拟API调用延迟
+  await new Promise(resolve => setTimeout(resolve, 1000));
+  
+  // 模拟登录成功
+  console.log('登录成功！');
+  alert('登录成功！');
+  
+  // 登录成功后跳转到首页
+  router.push('/');
 };
 </script>
 
 <style scoped>
-.login-container {
+.auth-container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -53,7 +78,7 @@ const handleLogin = () => {
   background-color: #f5f5f5;
 }
 
-.login-form {
+.auth-form {
   width: 100%;
   max-width: 400px;
   padding: 2rem;
@@ -64,10 +89,17 @@ const handleLogin = () => {
 
 .title {
   text-align: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.5rem;
   color: #333;
   font-size: 2rem;
   font-weight: bold;
+}
+
+.subtitle {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #666;
+  font-size: 1.2rem;
 }
 
 .input-group {
@@ -97,7 +129,7 @@ const handleLogin = () => {
   box-shadow: 0 0 0 2px rgba(64, 158, 237, 0.2);
 }
 
-.login-button {
+.submit-button {
   width: 100%;
   padding: 0.75rem;
   background-color: #409eff;
@@ -110,11 +142,27 @@ const handleLogin = () => {
   margin-top: 1rem;
 }
 
-.login-button:hover {
+.submit-button:hover {
   background-color: #66b1ff;
 }
 
-.login-button:active {
+.submit-button:active {
   background-color: #3a7bc8;
+}
+
+.redirect-text {
+  text-align: center;
+  margin-top: 1.5rem;
+  color: #666;
+}
+
+.link {
+  color: #409eff;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.link:hover {
+  text-decoration: underline;
 }
 </style>
